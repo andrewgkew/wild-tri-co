@@ -14,7 +14,11 @@ resource "konnect_api" "apis" {
   slug         = each.value.info.x-konnect.slug
   version      = each.value.info.version
   description  = each.value.info.description
-  attributes   = jsonencode(each.value.info.x-konnect.attributes)
+  attributes = jsonencode({
+    for k, v in each.value.info.x-konnect.attributes : k => (
+      can(v[0]) ? toset(v) : v
+    )
+  })
   spec_content = file("${path.module}/../specs/${each.key}.yaml")
 }
 
