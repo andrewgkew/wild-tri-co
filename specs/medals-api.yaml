@@ -1,0 +1,297 @@
+openapi: 3.1.0
+info:
+  title: Triathlon Medal Management API
+  version: 1.0.0
+  description: API for managing triathlon race medals, including creation, updates, and tracking.
+  contact:
+    name: API Support
+    url: https://example.com/support
+    email: support@example.com
+servers:
+  - url: https://api.example.com/v1
+    description: Production server
+tags:
+  - name: Medals
+    description: Operations related to managing triathlon race medals.
+components:
+  schemas:
+    Medal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the medal.
+        race_name:
+          type: string
+          description: Name of the triathlon race.
+        year:
+          type: integer
+          description: Year the race was held.
+        design_url:
+          type: string
+          format: URL
+          description: URL to the medal design image.
+        material:
+          type: string
+          description: Material the medal is made of.
+        quantity_produced:
+          type: integer
+          description: Number of medals produced for the race.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the medal was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the medal was last updated.
+      required:
+        - race_name
+        - year
+        - design_url
+        - material
+        - quantity_produced
+      example:
+        id: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+        race_name: "Ironman Triathlon"
+        year: 2024
+        design_url: "https://example.com/medals/ironman2024.png"
+        material: "Zinc Alloy"
+        quantity_produced: 2500
+        created_at: "2024-01-01T00:00:00Z"
+        updated_at: "2024-01-01T00:00:00Z"
+    MedalList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Medal'
+        meta:
+          type: object
+          properties:
+            page:
+              type: object
+              properties:
+                offset:
+                  type: integer
+                  description: The number of items to skip before starting to collect the result set.
+                limit:
+                  type: integer
+                  description: The numbers of items to return.
+                total:
+                  type: integer
+                  description: The total number of items available.
+                estimated_total:
+                  type: boolean
+                  description: 'If the total results count is an estimate, this field is true.'
+      required:
+        - data
+        - meta
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code.
+        message:
+          type: string
+          description: Error message.
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+paths:
+  /medals:
+    get:
+      summary: List all medals with pagination
+      description: Returns a list of all medals, supporting pagination.
+      operationId: listMedals
+      tags:
+        - Medals
+      parameters:
+        - name: offset
+          in: query
+          description: The number of items to skip before starting to collect the result set.
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: The numbers of items to return.
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedalList'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - apiKeyAuth: []
+    post:
+      summary: Create a new medal
+      description: Creates a new medal for a triathlon race.
+      operationId: createMedal
+      tags:
+        - Medals
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Medal'
+      responses:
+        '201':
+          description: Medal created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Medal'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - apiKeyAuth: []
+  /medals/{id}:
+    get:
+      summary: Get a medal by ID
+      description: Retrieves a specific medal by its unique ID.
+      operationId: getMedalById
+      tags:
+        - Medals
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the medal to retrieve
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Medal'
+        '404':
+          description: Medal not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - apiKeyAuth: []
+    put:
+      summary: Update a medal by ID
+      description: Updates an existing medal with the provided information.
+      operationId: updateMedalById
+      tags:
+        - Medals
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the medal to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Medal'
+      responses:
+        '200':
+          description: Medal updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Medal'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Medal not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - apiKeyAuth: []
+    delete:
+      summary: Delete a medal by ID
+      description: Deletes a specific medal by its unique ID.
+      operationId: deleteMedalById
+      tags:
+        - Medals
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the medal to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Medal deleted successfully
+        '404':
+          description: Medal not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - apiKeyAuth: []
+security:
+  - apiKeyAuth: []
