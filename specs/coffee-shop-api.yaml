@@ -1,0 +1,628 @@
+openapi: 3.1.0
+info:
+  name: Coffee Shop
+  title: Coffee Shop Management API
+  description: API for managing coffee shop operations, including stock, orders, and menu items.
+  version: 1.6.0
+  contact:
+    name: API Support
+    url: https://wildtrico.com/support
+    email: support@wildtrico.com
+  x-konnect:
+    slug: coffee-shop-v1
+    attributes:
+      domain: [ "Business" ]
+      use_case: [ "Commerce" ]
+      audience: [ "Athlete" ]
+      data_type: [ "Transactions" ]
+      business_function: [ "Retail" ]
+      workflow_stage: [ "Community" ]
+      integration_type: [ "Payment","Commerce" ]
+      access_level: [ "Public" ]
+      complexity_level: [ "Basic CRUD" ]
+      industry_focus: [ "Retail","Community" ]
+servers:
+  - url: https://api.example.com/coffee-shop
+    description: Main server
+tags:
+  - name: Menu Items
+    description: Operations related to managing menu items.
+  - name: Stock Management
+    description: Operations related to managing stock levels.
+  - name: Orders
+    description: Operations related to managing customer orders.
+paths:
+  /menu-items:
+    get:
+      summary: List all menu items with pagination
+      description: Returns a list of all available menu items with pagination.
+      operationId: listMenuItems
+      tags:
+        - Menu Items
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Number of items to skip for pagination
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuItemList'
+    post:
+      summary: Add a new menu item
+      description: Adds a new menu item to the menu.
+      operationId: addMenuItem
+      tags:
+        - Menu Items
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuItemInput'
+      responses:
+        '201':
+          description: Item created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuItem'
+        '400':
+          description: Invalid input
+  /menu-items/{item_id}:
+    get:
+      summary: Get a specific menu item
+      description: Retrieves a specific menu item by its ID.
+      operationId: getMenuItem
+      tags:
+        - Menu Items
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          description: ID of the menu item to retrieve
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuItem'
+        '404':
+          description: Item not found
+    put:
+      summary: Update a menu item
+      description: Updates an existing menu item.
+      operationId: updateMenuItem
+      tags:
+        - Menu Items
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          description: ID of the menu item to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuItemInput'
+      responses:
+        '200':
+          description: Item updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuItem'
+        '400':
+          description: Invalid input
+        '404':
+          description: Item not found
+    delete:
+      summary: Delete a menu item
+      description: Deletes a menu item from the menu.
+      operationId: deleteMenuItem
+      tags:
+        - Menu Items
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          description: ID of the menu item to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Item deleted successfully
+        '404':
+          description: Item not found
+  /stock:
+    get:
+      summary: List all stock items with pagination
+      description: Returns a list of all stock items with pagination.
+      operationId: listStockItems
+      tags:
+        - Stock Management
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Number of items to skip for pagination
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StockItemList'
+    post:
+      summary: Add a new stock item
+      description: Adds a new stock item to the inventory.
+      operationId: addStockItem
+      tags:
+        - Stock Management
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockItemInput'
+      responses:
+        '201':
+          description: Item created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StockItem'
+        '400':
+          description: Invalid input
+  /stock/{item_id}:
+    get:
+      summary: Get a specific stock item
+      description: Retrieves a specific stock item by its ID.
+      operationId: getStockItem
+      tags:
+        - Stock Management
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          description: ID of the stock item to retrieve
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StockItem'
+        '404':
+          description: Item not found
+    put:
+      summary: Update a stock item
+      description: Updates an existing stock item.
+      operationId: updateStockItem
+      tags:
+        - Stock Management
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          description: ID of the stock item to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockItemInput'
+      responses:
+        '200':
+          description: Item updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StockItem'
+        '400':
+          description: Invalid input
+        '404':
+          description: Item not found
+    delete:
+      summary: Delete a stock item
+      description: Deletes a stock item from the inventory.
+      operationId: deleteStockItem
+      tags:
+        - Stock Management
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          description: ID of the stock item to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Item deleted successfully
+        '404':
+          description: Item not found
+  /orders:
+    get:
+      summary: List all orders with pagination
+      description: Returns a list of all orders with pagination.
+      operationId: listOrders
+      tags:
+        - Orders
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Number of items to skip for pagination
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderList'
+    post:
+      summary: Create a new order
+      description: Creates a new customer order.
+      operationId: createOrder
+      tags:
+        - Orders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInput'
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Invalid input
+  /orders/{order_id}:
+    get:
+      summary: Get a specific order
+      description: Retrieves a specific order by its ID.
+      operationId: getOrder
+      tags:
+        - Orders
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          description: ID of the order to retrieve
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '404':
+          description: Order not found
+    put:
+      summary: Update an order
+      description: Updates an existing order.
+      operationId: updateOrder
+      tags:
+        - Orders
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          description: ID of the order to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInput'
+      responses:
+        '200':
+          description: Order updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Invalid input
+        '404':
+          description: Order not found
+    delete:
+      summary: Delete an order
+      description: Deletes an order.
+      operationId: deleteOrder
+      tags:
+        - Orders
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          description: ID of the order to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Order deleted successfully
+        '404':
+          description: Order not found
+components:
+  schemas:
+    MenuItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the menu item
+        name:
+          type: string
+          description: Name of the menu item
+        description:
+          type: string
+          description: Description of the menu item
+        price:
+          type: number
+          format: float
+          description: Price of the menu item
+      example:
+        id: 123e4567-e89b-12d3-a456-426614174000
+        name: Latte
+        description: Classic coffee with steamed milk
+        price: 3.50
+    MenuItemInput:
+      type: object
+      required:
+        - name
+        - price
+      properties:
+        name:
+          type: string
+          description: Name of the menu item
+        description:
+          type: string
+          description: Description of the menu item
+        price:
+          type: number
+          format: float
+          description: Price of the menu item
+      example:
+        name: Espresso
+        description: Strong black coffee
+        price: 2.50
+    MenuItemList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuItem'
+        meta:
+          type: object
+          properties:
+            page:
+              type: object
+              properties:
+                offset:
+                  type: integer
+                  description: The page number to return
+                  example: 0
+                limit:
+                  type: integer
+                  description: The number of results to return per page
+                  example: 20
+                total:
+                  type: integer
+                  description: The total number of results available
+                  example: 100
+                estimated_total:
+                  type: boolean
+                  description: If the total results is an estimate
+                  example: true
+    StockItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the stock item
+        name:
+          type: string
+          description: Name of the stock item
+        quantity:
+          type: integer
+          description: Quantity of the item in stock
+      example:
+        id: 456a7890-abcd-4567-8901-1234567890ab
+        name: Coffee Beans
+        quantity: 100
+    StockItemInput:
+      type: object
+      required:
+        - name
+        - quantity
+      properties:
+        name:
+          type: string
+          description: Name of the stock item
+        quantity:
+          type: integer
+          description: Quantity of the item in stock
+      example:
+        name: Milk
+        quantity: 50
+    StockItemList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/StockItem'
+        meta:
+          type: object
+          properties:
+            page:
+              type: object
+              properties:
+                offset:
+                  type: integer
+                  description: The page number to return
+                  example: 0
+                limit:
+                  type: integer
+                  description: The number of results to return per page
+                  example: 20
+                total:
+                  type: integer
+                  description: The total number of results available
+                  example: 100
+                estimated_total:
+                  type: boolean
+                  description: If the total results is an estimate
+                  example: true
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the order
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              menu_item_id:
+                type: string
+                format: uuid
+                description: ID of the menu item
+              quantity:
+                type: integer
+                description: Quantity of the menu item in the order
+        total_amount:
+          type: number
+          format: float
+          description: Total amount of the order
+      example:
+        id: 789d0123-efab-4567-8901-234567890abc
+        items:
+          - menu_item_id: 123e4567-e89b-12d3-a456-426614174000
+            quantity: 2
+        total_amount: 7.00
+    OrderInput:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              menu_item_id:
+                type: string
+                format: uuid
+                description: ID of the menu item
+              quantity:
+                type: integer
+                description: Quantity of the menu item in the order
+      example:
+        items:
+          - menu_item_id: 123e4567-e89b-12d3-a456-426614174000
+            quantity: 1
+    OrderList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        meta:
+          type: object
+          properties:
+            page:
+              type: object
+              properties:
+                offset:
+                  type: integer
+                  description: The page number to return
+                  example: 0
+                limit:
+                  type: integer
+                  description: The number of results to return per page
+                  example: 20
+                total:
+                  type: integer
+                  description: The total number of results available
+                  example: 100
+                estimated_total:
+                  type: boolean
+                  description: If the total results is an estimate
+                  example: true

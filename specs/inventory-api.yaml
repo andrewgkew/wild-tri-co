@@ -1,0 +1,466 @@
+openapi: 3.1.0
+info:
+  name: Inventory
+  title: Triathlon Equipment Inventory and Sales API
+  version: 1.0.0
+  description: API for managing triathlon equipment inventory and sales.
+  contact:
+    name: API Support
+    url: https://wildtrico.com/support
+    email: support@wildtrico.com
+  x-konnect:
+    slug: inventory-v1
+    attributes:
+      domain: [ "Business" ]
+      use_case: [ "Commerce" ]
+      audience: [ "Admin", "Athlete" ]
+      data_type: [ "Inventory" ]
+      business_function: [ "Retail" ]
+      workflow_stage: [ "Prepare" ]
+      integration_type: [ "Commerce" ]
+      access_level: [ "Internal" ]
+      complexity_level: [ "Basic CRUD" ]
+      industry_focus: [ "Retail","Finance" ]
+servers:
+  - url: https://api.example.com/inventory
+    description: Main server
+tags:
+  - name: Equipment
+    description: Operations related to equipment inventory
+  - name: Sales
+    description: Operations related to equipment sales
+components:
+  schemas:
+    Equipment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the equipment.
+        name:
+          type: string
+          description: Name of the equipment.
+        description:
+          type: string
+          description: Detailed description of the equipment.
+        category:
+          type: string
+          description: Category of the equipment (e.g., bike, wetsuit, shoes).
+        brand:
+          type: string
+          description: Brand of the equipment.
+        model:
+          type: string
+          description: Model of the equipment.
+        size:
+          type: string
+          description: Size of the equipment (if applicable).
+        quantity:
+          type: integer
+          description: Quantity of the equipment in stock.
+        price:
+          type: number
+          format: float
+          description: Price of the equipment.
+        condition:
+          type: string
+          description: Condition of the equipment (e.g., new, used).
+      required:
+        - id
+        - name
+        - category
+        - brand
+        - model
+        - quantity
+        - price
+        - condition
+      example:
+        id: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+        name: Tri Bike
+        description: High-performance triathlon bike.
+        category: bike
+        brand: Cervelo
+        model: P5X
+        size: 56cm
+        quantity: 5
+        price: 12000.00
+        condition: new
+    EquipmentList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Equipment'
+        meta:
+          type: object
+          properties:
+            page:
+              type: object
+              properties:
+                offset:
+                  type: integer
+                  description: The number of items to skip before starting to collect the result set.
+                limit:
+                  type: integer
+                  description: The numbers of items to return.
+                total:
+                  type: integer
+                  description: The total number of items available.
+                estimated_total:
+                  type: boolean
+                  description: True if the total is an estimate, false if it is the exact value.
+      example:
+        data:
+          - id: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+            name: Tri Bike
+            description: High-performance triathlon bike.
+            category: bike
+            brand: Cervelo
+            model: P5X
+            size: 56cm
+            quantity: 5
+            price: 12000.00
+            condition: new
+        meta:
+          page:
+            offset: 0
+            limit: 20
+            total: 1
+            estimated_total: false
+    Sale:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the sale.
+        equipment_id:
+          type: string
+          format: uuid
+          description: ID of the equipment sold.
+        quantity:
+          type: integer
+          description: Quantity of the equipment sold.
+        sale_date:
+          type: string
+          format: date-time
+          description: Date and time of the sale.
+        sale_price:
+          type: number
+          format: float
+          description: Price at which the equipment was sold.
+      required:
+        - id
+        - equipment_id
+        - quantity
+        - sale_date
+        - sale_price
+      example:
+        id: "123e4567-e89b-12d3-a456-426614174000"
+        equipment_id: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+        quantity: 1
+        sale_date: "2024-01-01T12:00:00Z"
+        sale_price: 12000.00
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code.
+        message:
+          type: string
+          description: Error message.
+  responses:
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ServerError:
+      description: Internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+paths:
+  /equipment:
+    get:
+      summary: List all equipment
+      description: Returns a list of all equipment with pagination.
+      operationId: listEquipment
+      tags:
+        - Equipment
+      parameters:
+        - name: offset
+          in: query
+          description: The number of items to skip before starting to collect the result set.
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: The numbers of items to return.
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    post:
+      summary: Add new equipment
+      description: Adds a new equipment item to the inventory.
+      operationId: addEquipment
+      tags:
+        - Equipment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Equipment'
+      responses:
+        '201':
+          description: Equipment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Equipment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/ServerError'
+  /equipment/{id}:
+    get:
+      summary: Get equipment by ID
+      description: Returns a single equipment item by its ID.
+      operationId: getEquipmentById
+      tags:
+        - Equipment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the equipment to retrieve
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Equipment'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    put:
+      summary: Update equipment by ID
+      description: Updates an existing equipment item by its ID.
+      operationId: updateEquipmentById
+      tags:
+        - Equipment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the equipment to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Equipment'
+      responses:
+        '200':
+          description: Equipment updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Equipment'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    delete:
+      summary: Delete equipment by ID
+      description: Deletes an equipment item by its ID.
+      operationId: deleteEquipmentById
+      tags:
+        - Equipment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the equipment to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Equipment deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+  /sales:
+    get:
+      summary: List all sales
+      description: Returns a list of all sales with pagination.
+      operationId: listSales
+      tags:
+        - Sales
+      parameters:
+        - name: offset
+          in: query
+          description: The number of items to skip before starting to collect the result set.
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: The numbers of items to return.
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sale'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    post:
+      summary: Add a new sale
+      description: Adds a new sale record.
+      operationId: addSale
+      tags:
+        - Sales
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sale'
+      responses:
+        '201':
+          description: Sale created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/ServerError'
+  /sales/{id}:
+    get:
+      summary: Get sale by ID
+      description: Returns a single sale record by its ID.
+      operationId: getSaleById
+      tags:
+        - Sales
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the sale to retrieve
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    put:
+      summary: Update sale by ID
+      description: Updates an existing sale record by its ID.
+      operationId: updateSaleById
+      tags:
+        - Sales
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the sale to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sale'
+      responses:
+        '200':
+          description: Sale updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    delete:
+      summary: Delete sale by ID
+      description: Deletes a sale record by its ID.
+      operationId: deleteSaleById
+      tags:
+        - Sales
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the sale to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Sale deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'

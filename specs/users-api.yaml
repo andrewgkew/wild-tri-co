@@ -1,0 +1,233 @@
+openapi: 3.1.0
+info:
+  name: Users
+  title: User Account and Role Management API
+  version: 1.6.0
+  description: API for managing user accounts, authentication, and roles within a triathlon business.
+  contact:
+    name: API Support
+    url: https://wildtrico.com/support
+    email: support@wildtrico.com
+  x-konnect:
+    slug: users-v1
+    attributes:
+      domain: [ "Business" ]
+      use_case: [ "Operations" ]
+      audience: [ "Admin" ]
+      data_type: [ "Profiles" ]
+      business_function: [ "User Mgmt" ]
+      workflow_stage: [ "Any" ]
+      integration_type: [ "Core System" ]
+      access_level: [ "Internal" ]
+      complexity_level: [ "Basic CRUD" ]
+      industry_focus: [ "Business Operations" ]
+servers:
+  - url: https://api.example.com/v1
+    description: Production server
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the user.
+        username:
+          type: string
+          description: User's username.
+        email:
+          type: string
+          format: email
+          description: User's email address.
+        first_name:
+          type: string
+          description: User's first name.
+        last_name:
+          type: string
+          description: User's last name.
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+          description: List of roles assigned to the user.
+      required:
+        - id
+        - username
+        - email
+        - first_name
+        - last_name
+    Role:
+      type: string
+      enum:
+        - administrator
+        - coach
+        - athlete
+        - customer
+      description: User role within the system.
+    UserList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        meta:
+          type: object
+          properties:
+            page:
+              type: object
+              properties:
+                offset:
+                  type: integer
+                  description: The number of items to skip before starting to collect the result set.
+                limit:
+                  type: integer
+                  description: The numbers of items to return.
+                total:
+                  type: integer
+                  description: The total number of items available.
+                estimated_total:
+                  type: boolean
+                  description: "If the total count is an estimate, such as when it's very expensive to compute."
+      required:
+        - data
+        - meta
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []
+tags:
+  - name: Users
+    description: Operations related to user management
+  - name: Roles
+    description: Operations related to role management
+
+paths:
+  /users:
+    get:
+      summary: List all users
+      description: Retrieve a list of all users with pagination.
+      operationId: listUsers
+      tags:
+        - Users
+      parameters:
+        - name: offset
+          in: query
+          description: The number of items to skip before starting to collect the result set.
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: The numbers of items to return.
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+      responses:
+        '200':
+          description: A list of users.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserList'
+    post:
+      summary: Create a new user
+      description: Create a new user account.
+      operationId: createUser
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input.
+  /users/{id}:
+    get:
+      summary: Get a user by ID
+      description: Retrieve a specific user by their ID.
+      operationId: getUserById
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user to retrieve.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: User details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found.
+    put:
+      summary: Update a user
+      description: Update an existing user's information.
+      operationId: updateUser
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user to update.
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input.
+        '404':
+          description: User not found.
+    delete:
+      summary: Delete a user
+      description: Delete a user account.
+      operationId: deleteUser
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the user to delete.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: User deleted successfully.
+        '404':
+          description: User not found.

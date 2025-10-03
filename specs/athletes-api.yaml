@@ -1,0 +1,302 @@
+openapi: 3.1.0
+info:
+  name: Athlete
+  title: Athlete Management API
+  description: API for managing athlete profiles and performance data.
+  version: 1.4.0
+  contact:
+    name: API Support
+    url: https://wildtrico.com/support
+    email: support@wildtrico.com
+  x-konnect:
+    slug: athlete-v1
+    attributes:
+      domain: [ "Athlete" ]
+      use_case: [ "Performance" ]
+      audience: [ "Athlete" ]
+      data_type: [ "Profiles" ]
+      business_function: [ "Training" ]
+      workflow_stage: [ "Train" ]
+      integration_type: [ "Core System" ]
+      access_level: [ "Partner" ]
+      complexity_level: [ "Basic CRUD" ]
+      industry_focus: [ "Sports Tech" ]
+servers:
+  - url: https://api.example.com/v1
+    description: Main API server
+tags:
+  - name: Athletes
+    description: APIs for managing athlete profiles and performance data.
+components:
+  schemas:
+    Athlete:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the athlete.
+        firstName:
+          type: string
+          description: Athlete's first name.
+        lastName:
+          type: string
+          description: Athlete's last name.
+        email:
+          type: string
+          format: email
+          description: Athlete's email address.
+        phone:
+          type: string
+          description: Athlete's phone number.
+        dateOfBirth:
+          type: string
+          format: date
+          description: Athlete's date of birth.
+        gender:
+          type: string
+          enum:
+            - male
+            - female
+            - other
+          description: Athlete's gender.
+        weight:
+          type: number
+          format: float
+          description: Athlete's weight in kilograms.
+        height:
+          type: number
+          format: float
+          description: Athlete's height in centimeters.
+      example:
+        id: 550e8400-e29b-41d4-a716-446655440000
+        firstName: John
+        lastName: Doe
+        email: john.doe@example.com
+        phone: 555-123-4567
+        dateOfBirth: 1990-01-01
+        gender: male
+        weight: 75.5
+        height: 180.0
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code.
+        message:
+          type: string
+          description: Error message.
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+security:
+  - apiKeyAuth: []
+paths:
+  /athletes:
+    get:
+      summary: List all athletes
+      description: Returns a list of all athletes with pagination.
+      tags:
+        - Athletes
+      operationId: getAthletes
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of items to return.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Number of items to skip.
+          schema:
+            type: integer
+            format: int32
+            default: 0
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Athlete'
+                  meta:
+                    type: object
+                    properties:
+                      page:
+                        type: object
+                        properties:
+                          offset:
+                            type: integer
+                            description: The number of items to skip.
+                          limit:
+                            type: integer
+                            description: The number of items per page.
+                          total:
+                            type: integer
+                            description: The total number of items available.
+                          estimated_total:
+                            type: boolean
+                            description: Indicates whether the total is estimated.
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a new athlete
+      description: Creates a new athlete.
+      tags:
+        - Athletes
+      operationId: createAthlete
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Athlete'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Athlete'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /athletes/{athlete-id}:
+    get:
+      summary: Get an athlete by ID
+      description: Returns a single athlete by their ID.
+      tags:
+        - Athletes
+      operationId: getAthleteById
+      parameters:
+        - name: athlete-id
+          in: path
+          required: true
+          description: The ID of the athlete to retrieve.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Athlete'
+        '404':
+          description: Athlete not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update an athlete by ID
+      description: Updates an existing athlete by their ID.
+      tags:
+        - Athletes
+      operationId: updateAthlete
+      parameters:
+        - name: athlete-id
+          in: path
+          required: true
+          description: The ID of the athlete to update.
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Athlete'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Athlete'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Athlete not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete an athlete by ID
+      description: Deletes an athlete by their ID.
+      tags:
+        - Athletes
+      operationId: deleteAthlete
+      parameters:
+        - name: athlete-id
+          in: path
+          required: true
+          description: The ID of the athlete to delete.
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Successful operation
+        '404':
+          description: Athlete not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'

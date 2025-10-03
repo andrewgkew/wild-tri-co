@@ -1,0 +1,269 @@
+openapi: 3.1.0
+info:
+  name: Analytics
+  title: Triathlon Business Reports and Insights API
+  version: 1.0.0
+  description: API for generating reports and insights on athlete performance and business operations for a triathlon business.
+  contact:
+    name: API Support
+    url: https://wildtrico.com/support
+    email: support@wildtrico.com
+  x-konnect:
+    slug: analytics-v1
+    attributes:
+      domain: [ "Business" ]
+      use_case: [ "Insights" ]
+      audience: [ "Admin", "Coach" ]
+      data_type: [ "Reports" ]
+      business_function: [ "Analytics" ]
+      workflow_stage: [ "Analyze" ]
+      integration_type: [ "Analytics", "Reporting"]
+      access_level: [ "Internal"]
+      complexity_level: [ "Analytics APIs" ]
+      industry_focus: [ "Sports Tech", "OPS" ]
+servers:
+  - url: https://api.example.com/v1
+    description: Production server
+tags:
+  - name: Athlete Performance
+    description: Endpoints for generating reports on athlete performance.
+  - name: Business Operations
+    description: Endpoints for generating reports on business operations.
+paths:
+  /athlete-performance/reports:
+    get:
+      summary: Retrieve athlete performance reports
+      description: Returns a list of athlete performance reports with pagination.
+      operationId: getAthletePerformanceReports
+      tags:
+        - Athlete Performance
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of items to return.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Number of items to skip.
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            default: 0
+        - name: athlete_id
+          in: query
+          description: Filter reports by athlete ID.
+          schema:
+            type: string
+            format: uuid
+        - name: report_type
+          in: query
+          description: Filter reports by report type.
+          schema:
+            type: string
+            enum:
+              - race_analysis
+              - training_summary
+              - progress_tracking
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AthletePerformanceReport'
+                  meta:
+                    type: object
+                    properties:
+                      page:
+                        type: object
+                        properties:
+                          offset:
+                            type: integer
+                            description: The offset of the current page.
+                            example: 0
+                          limit:
+                            type: integer
+                            description: The limit of the current page.
+                            example: 20
+                          total:
+                            type: integer
+                            description: The total number of items.
+                            example: 100
+                          estimated_total:
+                            type: boolean
+                            description: Indicates if the total is an estimated value.
+                            example: true
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /business-operations/reports:
+    get:
+      summary: Retrieve business operations reports
+      description: Returns a list of business operations reports with pagination.
+      operationId: getBusinessOperationsReports
+      tags:
+        - Business Operations
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of items to return.
+          schema:
+            type: integer
+            format: int32
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Number of items to skip.
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            default: 0
+        - name: report_type
+          in: query
+          description: Filter reports by report type.
+          schema:
+            type: string
+            enum:
+              - financial_summary
+              - customer_acquisition
+              - resource_utilization
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BusinessOperationsReport'
+                  meta:
+                    type: object
+                    properties:
+                      page:
+                        type: object
+                        properties:
+                          offset:
+                            type: integer
+                            description: The offset of the current page.
+                            example: 0
+                          limit:
+                            type: integer
+                            description: The limit of the current page.
+                            example: 20
+                          total:
+                            type: integer
+                            description: The total number of items.
+                            example: 100
+                          estimated_total:
+                            type: boolean
+                            description: Indicates if the total is an estimated value.
+                            example: true
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    AthletePerformanceReport:
+      type: object
+      properties:
+        report_id:
+          type: string
+          format: uuid
+          description: Unique identifier for the report.
+          example: 550e8400-e29b-41d4-a716-446655440000
+        athlete_id:
+          type: string
+          format: uuid
+          description: Unique identifier for the athlete.
+          example: 650e8400-e29b-41d4-a716-446655440001
+        report_type:
+          type: string
+          description: Type of the report.
+          example: race_analysis
+        report_date:
+          type: string
+          format: date-time
+          description: Date and time the report was generated.
+          example: 2024-01-01T12:00:00Z
+        report_data:
+          type: object
+          description: Report data (specific to the report type).
+          example: {}
+      required:
+        - report_id
+        - athlete_id
+        - report_type
+        - report_date
+        - report_data
+    BusinessOperationsReport:
+      type: object
+      properties:
+        report_id:
+          type: string
+          format: uuid
+          description: Unique identifier for the report.
+          example: 750e8400-e29b-41d4-a716-446655440002
+        report_type:
+          type: string
+          description: Type of the report.
+          example: financial_summary
+        report_date:
+          type: string
+          format: date-time
+          description: Date and time the report was generated.
+          example: 2024-01-01T12:00:00Z
+        report_data:
+          type: object
+          description: Report data (specific to the report type).
+          example: {}
+      required:
+        - report_id
+        - report_type
+        - report_date
+        - report_data
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code.
+          example: '400'
+        message:
+          type: string
+          description: Error message.
+          example: 'Bad Request'
