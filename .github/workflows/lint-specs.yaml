@@ -7,8 +7,26 @@ on:
       - ".github/ruleset.yaml"
 
 jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      changed-specs: ${{ steps.filter.outputs.specs }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Detect changed spec files
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            specs:
+              - 'specs/**.yaml'
+
   vacuum-lint:
     runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.changed-specs != '[]'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -21,6 +39,10 @@ jobs:
       - name: Install Vacuum
         run: npm install -g @quobix/vacuum
 
-      - name: Run Vacuum lint
+      - name: Run Vacuum on changed specs
         run: |
-          vacuum lint "specs/*.yaml" --ruleset .github/ruleset.yaml
+          echo "Changed specs: ${{ needs.detect-changes.outputs.changed-specs }}"
+          for file in ${{ fromJson(needs.detect-changes.outputs.changed-specs) }}; do
+            echo "Linting $file ..."
+            vacuum lint "$file" --ruleset .github/ruleset.yaml
+          done
