@@ -1,9 +1,14 @@
 name: Terraform
 
 on:
+  workflow_dispatch:
   push:
+    paths-ignore:
+      - README.md
+      - LICENSE.md
+      - .github/ruleset.yaml
+      - .github/workflows/lint-specs.yaml
     branches: [ "main" ]
-  pull_request:
 
 jobs:
   terraform:
