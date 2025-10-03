@@ -43,6 +43,6 @@ jobs:
           show_rules: true
           fail_on_error: true
           minimum_score: 100
-          print_logs: false
+          print_logs: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
