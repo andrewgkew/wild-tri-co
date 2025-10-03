@@ -23,7 +23,7 @@ jobs:
 
   vacuum-lint:
     needs: detect-changes
-    if: needs.detect-changes.outputs.specs != '[]'
+    if: ${{ needs.detect-changes.outputs.specs == 'true' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
