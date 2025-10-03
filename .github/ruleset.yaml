@@ -1,6 +1,14 @@
 extends: recommended
 
 rules:
+  require-info-name:
+    description: "info.name must be defined"
+    severity: error
+    given: $.info
+    then:
+      - field: name
+        function: truthy
+
   require-info-title:
     description: "info.title must be defined"
     severity: error
@@ -23,6 +31,14 @@ rules:
     given: $.info
     then:
       - field: description
+        function: truthy
+
+  require-x-konnect:
+    description: "info.x-konnect.slug must be defined"
+    severity: error
+    given: $.info
+    then:
+      - field: x-konnect
         function: truthy
 
   require-x-konnect-slug:
