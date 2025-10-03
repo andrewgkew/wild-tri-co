@@ -6,7 +6,7 @@ info:
   contact:
     name: API Support
     url: https://example.com/support
-    email: support@example.com
+    email: support@wildtrico.com
 servers:
   - url: https://api.example.com/v1
     description: Production server
