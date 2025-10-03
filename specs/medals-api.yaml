@@ -5,7 +5,7 @@ info:
   description: API for managing triathlon race medals, including creation, updates, and tracking.
   contact:
     name: API Support
-    url: https://example.com/support
+    url: https://wildtrico.com/support
     email: support@wildtrico.com
 servers:
   - url: https://api.example.com/v1
