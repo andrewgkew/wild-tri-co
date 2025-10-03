@@ -1,3 +1,7 @@
+permissions:
+  contents: read
+  pull-requests: write
+
 name: Lint OpenAPI Specs
 
 on:
@@ -7,20 +11,38 @@ on:
       - ".github/ruleset.yaml"
 
 jobs:
-  vacuum-lint:
+  detect-changes:
     runs-on: ubuntu-latest
+    outputs:
+      changes: ${{ steps.filter.outputs.specs }}
+      files: ${{ steps.filter.outputs.specs_files }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - id: filter
+        uses: dorny/paths-filter@v3
         with:
-          node-version: 18
+          list-files: json
+          filters: |
+            specs:
+              - 'specs/**.yaml'
 
-      - name: Install Vacuum
-        run: npm install -g @quobix/vacuum
+  vacuum-lint:
+    needs: detect-changes
+    if: ${{ needs.detect-changes.outputs.changes == 'true' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        file: ${{ fromJSON(needs.detect-changes.outputs.files) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run OpenAPI lint with vacuum
+        uses: pb33f/vacuum-action@v2
+        with:
+          openapi_path: ${{ matrix.file }}
+          ruleset: .github/ruleset.yaml
+          show_rules: true
+          fail_on_error: true
+          minimum_score: 100
+          print_logs: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run Vacuum lint
-        run: |
-          vacuum lint "specs/*.yaml" --ruleset .github/ruleset.yaml
