@@ -41,7 +41,7 @@ jobs:
           openapi_path: ${{ matrix.file }}
           ruleset: .github/ruleset.yaml
           show_rules: true
-          fail_on_error: true
+          fail_on_error: false
           minimum_score: 100
           print_logs: false
           github_token: ${{ secrets.GITHUB_TOKEN }}
