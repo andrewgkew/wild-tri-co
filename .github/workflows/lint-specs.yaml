@@ -16,6 +16,7 @@ jobs:
       - id: filter
         uses: dorny/paths-filter@v3
         with:
+          list-files: json
           filters: |
             specs:
               - 'specs/**.yaml'
@@ -26,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        file: ${{ fromJSON(needs.detect-changes.outputs.specs) }}
+        file: ${{ fromJSON(needs.detect-changes.outputs.specs_files) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
