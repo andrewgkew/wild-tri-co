@@ -10,7 +10,8 @@ jobs:
   detect-changes:
     runs-on: ubuntu-latest
     outputs:
-      specs: ${{ steps.filter.outputs.specs }}
+      changes: ${{ steps.filter.outputs.specs }}
+      files: ${{ steps.filter.outputs.specs_files }}
     steps:
       - uses: actions/checkout@v4
       - id: filter
@@ -23,11 +24,11 @@ jobs:
 
   vacuum-lint:
     needs: detect-changes
-    if: ${{ needs.detect-changes.outputs.specs == 'true' }}
+    if: ${{ needs.detect-changes.outputs.changes == 'true' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        file: ${{ fromJSON(needs.detect-changes.outputs.specs_files) }}
+        file: ${{ fromJSON(needs.detect-changes.outputs.files) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
