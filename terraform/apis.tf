@@ -1,15 +1,10 @@
 locals {
   spec_files = fileset("${path.module}/../specs", "*.yaml")
-  docs_files = fileset("${path.module}/../docs", "*.md")
+  docs = fileset("${path.module}/../docs", "*.md")
 
   apis = {
     for f in local.spec_files :
     trimsuffix(f, ".yaml") => yamldecode(file("${path.module}/../specs/${f}"))
-  }
-
-  docs = {
-    for f in local.docs_files :
-    trimsuffix(f, ".md") => yamldecode(file("${path.module}/../docs/${f}"))
   }
 }
 
@@ -40,8 +35,8 @@ resource "konnect_api_publication" "api_publications" {
 resource "konnect_api_document" "my_apidocument" {
   for_each           = local.docs
   api_id             = "11a505a1-f179-440e-821c-475941d4241d"
-  content            = file("${path.module}/../docs/${each.key}.md")
-  slug               = each.key
+  content            = file("${path.module}/../docs/${each.key}")
+  slug               = trimsuffix(each.key,".md")
   status             = "published"
-  title              = title(replace(each.key, "-", " "))
+  title              = title(replace(trimsuffix(each.key,".md"), "-", " "))
 }
