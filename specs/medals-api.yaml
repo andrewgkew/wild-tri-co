@@ -1,5 +1,6 @@
 openapi: 3.1.0
 info:
+  name: Medal Management API.
   title: Triathlon Medal Management API.
   version: 1.0.0
   description: API for managing triathlon race medals, including creation, updates, and tracking.
@@ -7,6 +8,19 @@ info:
     name: API Support
     url: https://wildtrico.com/support
     email: support@wildtrico.com
+  x-konnect:
+    slug: medal-v1
+    attributes:
+      domain: [ "Business" ]
+      use_case: [ "Commerce" ]
+      audience: [ "Admin", "Athlete" ]
+      data_type: [ "Inventory" ]
+      business_function: [ "Analytics" ]
+      workflow_stage: [ "Retail" ]
+      integration_type: [ "Prepare" ]
+      access_level: [ "Internal"]
+      complexity_level: [ "Basic CRUD" ]
+      industry_focus: [ "Retail" ]
 servers:
   - url: https://api.example.com/v1
     description: Production server
