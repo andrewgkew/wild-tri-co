@@ -18,7 +18,7 @@ X-API-Key: YOUR_API_KEY
 
 ## Example: List Payroll Entries
 ```bash
-curl -X GET "https://api.example.com/finance/payroll?limit=5" \
+curl -X GET "https://api.wildtrico.com/finance/payroll?limit=5" \
   -H "X-API-Key: YOUR_API_KEY" \
   -H "Accept: application/json"
 ```
@@ -27,7 +27,7 @@ curl -X GET "https://api.example.com/finance/payroll?limit=5" \
 
 ## Example: Create Payroll Entry
 ```bash
-curl -X POST "https://api.example.com/finance/payroll" \
+curl -X POST "https://api.wildtrico.com/finance/payroll" \
   -H "X-API-Key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
