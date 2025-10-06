@@ -269,3 +269,8 @@ components:
           type: string
           description: Error message.
           example: 'Bad Request'
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

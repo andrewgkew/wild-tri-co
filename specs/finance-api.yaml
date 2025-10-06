@@ -24,6 +24,8 @@ info:
 servers:
   - url: https://api.example.com/finance
     description: Main server
+security:
+  - apiKeyAuth: []
 tags:
   - name: Finance
     description: Operations related to financial management
@@ -416,3 +418,8 @@ components:
                   type: boolean
                   description: If the total results count is an estimate
                   example: true
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
