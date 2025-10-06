@@ -5,7 +5,7 @@ resource "konnect_portal_page" "homepage" {
   slug           = "/"
   status         = "published"
   title          = "Wild Tri Co. API"
-  visibility     = "public"
+  visibility     = "private"
 }
 
 resource "konnect_portal_page" "apis" {
@@ -15,7 +15,7 @@ resource "konnect_portal_page" "apis" {
   slug           = "/apis"
   status         = "published"
   title          = "APIs"
-  visibility     = "public"
+  visibility     = "private"
 }
 
 resource "konnect_portal_page" "getting_started" {
@@ -25,5 +25,5 @@ resource "konnect_portal_page" "getting_started" {
   slug           = "/getting-started"
   status         = "published"
   title          = "Getting Started"
-  visibility     = "public"
+  visibility     = "private"
 }
