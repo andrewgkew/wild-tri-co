@@ -3,13 +3,13 @@ info:
   name: Finance
   title: Triathlon Business Finance API
   description: API for managing finances, reports, and payroll for a triathlon business.
-  version: 1.3.0
+  version: 1.2.0
   contact:
     name: API Support
     url: https://wildtrico.com/support
     email: support@wildtrico.com
   x-konnect:
-    slug: finance-v1-3
+    slug: finance-v1-2
     attributes:
       domain: [ "Business" ]
       use_case: [ "Commerce" ]
@@ -163,83 +163,6 @@ paths:
           description: Invoice deleted
         '404':
           description: Invoice not found
-  /reports/monthly:
-    get:
-      summary: Generate monthly financial report
-      description: Generates a monthly financial report.
-      operationId: generateMonthlyReport
-      tags:
-        - Reports
-      parameters:
-        - name: month
-          in: query
-          required: true
-          description: The month for which to generate the report (YYYY-MM)
-          schema:
-            type: string
-            pattern: '^\d{4}-\d{2}$'
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FinancialReport'
-        '400':
-          description: Invalid input
-  /payroll:
-    get:
-      summary: List all payroll entries with pagination
-      description: Returns a list of all payroll entries with pagination.
-      operationId: listPayrollEntries
-      tags:
-        - Payroll
-      parameters:
-        - name: limit
-          in: query
-          description: Maximum number of items to return
-          schema:
-            type: integer
-            format: int32
-            minimum: 1
-            maximum: 100
-            default: 20
-        - name: offset
-          in: query
-          description: Number of items to skip for pagination
-          schema:
-            type: integer
-            format: int32
-            minimum: 0
-            default: 0
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PayrollEntryList'
-    post:
-      summary: Create a new payroll entry
-      description: Creates a new payroll entry.
-      operationId: createPayrollEntry
-      tags:
-        - Payroll
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PayrollEntryInput'
-      responses:
-        '201':
-          description: Payroll entry created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PayrollEntry'
-        '400':
-          description: Invalid input
 components:
   schemas:
     Invoice:

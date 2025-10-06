@@ -50,3 +50,9 @@ resource "konnect_api_document" "apidocument_finance" {
   status             = "published"
   title              = title(replace(trimsuffix(each.key,".md"), "-", " "))
 }
+
+resource "konnect_api_version" "finance_api_v1_2" {
+  api_id = "fcc1dfd3-9306-4282-bcc7-7daa3035d27d"
+  spec = file("${path.module}/../docs/finance/finance-api-v1.2.yaml")
+  version = "1.2.0"
+}
