@@ -22,8 +22,10 @@ info:
       complexity_level: [ "Composite" ]
       industry_focus: [ "Retail","Finance" ]
 servers:
-  - url: https://api.example.com/finance
-    description: Main server
+  - url: https://api.wildtrico.com/finance
+    description: Production server
+  - url: https://api.uat.wildtrico.com/finance
+    description: UAT server
 security:
   - apiKeyAuth: []
 tags:
