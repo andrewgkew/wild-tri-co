@@ -24,6 +24,8 @@ info:
 servers:
   - url: https://api.example.com/v1
     description: Production server
+security:
+  - apiKeyAuth: []
 tags:
   - name: Athlete Performance
     description: Endpoints for generating reports on athlete performance.

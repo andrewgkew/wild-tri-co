@@ -1,27 +1,33 @@
 # Authentication
 
 ## Overview
-The Analytics API uses **Bearer Token Authentication** for secure access.
+The Analytics API uses **API Key Authentication** to secure access.
 
-Include your access token in every request header:
+You must include your API key in the header of every request using the `X-API-Key` header.
+
+---
+
+## Header Format
 
 ```http
-Authorization: Bearer YOUR_API_TOKEN
+X-API-Key: YOUR_API_KEY
 ```
 
----
-
-## Obtaining an API Key
-API keys are provisioned to registered developers. Contact [support@wildtrico.com](mailto:support@wildtrico.com) for credentials.
-
----
-
-## Token Expiration
-Tokens may expire periodically. Refresh them using your organization’s developer console or support portal.
-
----
-
-## Example
+**Example Request:**
 ```bash
-curl -H "Authorization: Bearer YOUR_API_TOKEN" https://api.example.com/v1/business-operations/reports
+curl -H "X-API-Key: YOUR_API_KEY" \
+  https://api.example.com/v1/athlete-performance/reports
 ```
+
+---
+
+## Getting an API Key
+API keys are provisioned through your organization’s developer console or by contacting  
+**API Support:** [support@wildtrico.com](mailto:support@wildtrico.com)
+
+---
+
+## Security Notes
+- Keep your API key secret — never share or embed it in client-side code.  
+- Rotate keys periodically for better security.  
+- If your key is compromised, revoke it immediately via the developer portal.
