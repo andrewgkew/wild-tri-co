@@ -11,16 +11,12 @@ resource "terracurl_request" "team_role" {
   url            = "https://eu.api.konghq.com/v3/portals/${konnect_portal.my_portal.id}/teams/${konnect_portal_team.team.id}/assigned-roles"
   method         = "POST"
   request_body   = <<EOF
-{
-  "data": [
-    {
-      "role_name": "API Consumer",
-      "entity_id": "*",
-      "entity_type_name": "APIs",
-      "entity_region": "*"
-    }
-  ]
-}
+  {
+    "role_name": "API Consumer",
+    "entity_id": "*",
+    "entity_type_name": "Services",
+    "entity_region": "eu"
+  }
 EOF
 
   headers = {
