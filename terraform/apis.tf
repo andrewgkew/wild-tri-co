@@ -1,6 +1,6 @@
 locals {
   spec_files = fileset("${path.module}/../specs", "*.yaml")
-  docs_files = fileset("${path.module}/../docs", "*.yaml")
+  docs_files = fileset("${path.module}/../docs", "*.md")
 
   apis = {
     for f in local.spec_files :
@@ -40,7 +40,7 @@ resource "konnect_api_publication" "api_publications" {
 resource "konnect_api_document" "my_apidocument" {
   for_each           = local.docs
   api_id             = "11a505a1-f179-440e-821c-475941d4241d"
-  content            = file("${path.module}/../docs/${each.key}.yaml")
+  content            = file("${path.module}/../docs/${each.key}.md")
   slug               = each.key
   status             = "published"
   title              = title(replace(each.key, "-", " "))
