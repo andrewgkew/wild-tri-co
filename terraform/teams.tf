@@ -12,10 +12,14 @@ resource "terracurl_request" "team_role" {
   method         = "POST"
   request_body   = <<EOF
 {
-  "role_name": "API Consumer",
-  "entity_id": "*",
-  "entity_type_name": "APIs",
-  "entity_region": "*"
+  "data": [
+    {
+      "role_name": "API Consumer",
+      "entity_id": "*",
+      "entity_type_name": "APIs",
+      "entity_region": "*"
+    }
+  ]
 }
 EOF
 
