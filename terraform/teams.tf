@@ -4,10 +4,28 @@ resource "konnect_portal_team" "team" {
   portal_id   = konnect_portal.my_portal.id
 }
 
-resource "konnect_team_role" "teamrole" {
-  entity_id        = "*"
-  entity_region    = "*"
-  entity_type_name = "APIs"
-  role_name        = "API Consumer"
-  team_id          = konnect_portal_team.team.id
+resource "terracurl_request" "team_role" {
+  name           = "portal_team_roles"
+
+  # Create instructions for Terraform
+  url            = "https://eu.api.konghq.com/v3/portals/${konnect_portal.my_portal.id}/teams/${konnect_portal_team.team.id}/assigned-roles"
+  method         = "POST"
+  request_body   = <<EOF
+{
+  "role_name": "API Consumer",
+  "entity_id": "*",
+  "entity_type_name": "APIs",
+  "entity_region": "*"
+}
+EOF
+
+  headers = {
+    Accept = "application/json, application/problem+json"
+    Content-Type = "application/json"
+    Authorization = "Bearer ${var.konnect_system_account_access_token}"
+  }
+
+  response_codes = [201]
+
+  skip_destroy = true
 }
