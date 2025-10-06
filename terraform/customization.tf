@@ -90,7 +90,7 @@ resource "konnect_portal_customization" "my_portalcustomization" {
         external   = false
         path       = "/apis"
         title      = "APIs"
-        visibility = "public"
+        visibility = "private"
       }
     ]
   }
