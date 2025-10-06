@@ -22,8 +22,10 @@ info:
       complexity_level: [ "Analytics APIs" ]
       industry_focus: [ "Sports Tech", "OPS" ]
 servers:
-  - url: https://api.example.com/v1
+  - url: https://api.wildtrico.com/analytics
     description: Production server
+  - url: https://api.uat.wildtrico.com/analytics
+    description: UAT server
 security:
   - apiKeyAuth: []
 tags:
