@@ -9,7 +9,7 @@ locals {
 
   docs = {
     for f in local.docs_files :
-    trimsuffix(f, ".yaml") => yamldecode(file("${path.module}/../docs/${f}"))
+    trimsuffix(f, ".md") => yamldecode(file("${path.module}/../docs/${f}"))
   }
 }
 
