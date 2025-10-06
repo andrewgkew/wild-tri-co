@@ -26,7 +26,7 @@ X-API-Key: YOUR_API_KEY
 
 ## Example Request
 ```bash
-curl -X GET "https://api.example.com/finance/reports/monthly?month=2024-01" \
+curl -X GET "https://api.wildtrico.com/finance/reports/monthly?month=2024-01" \
   -H "X-API-Key: YOUR_API_KEY" \
   -H "Accept: application/json"
 ```

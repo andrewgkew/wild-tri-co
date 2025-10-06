@@ -17,7 +17,7 @@ Accept: application/json
 
 ## 2. Base URL
 ```
-https://api.example.com/finance
+https://api.wildtrico.com/finance
 ```
 
 ---
@@ -26,7 +26,7 @@ https://api.example.com/finance
 Retrieve all invoices:
 
 ```bash
-curl -X GET "https://api.example.com/finance/invoices?limit=5" \
+curl -X GET "https://api.wildtrico.com/finance/invoices?limit=5" \
   -H "X-API-Key: YOUR_API_KEY" \
   -H "Accept: application/json"
 ```

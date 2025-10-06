@@ -15,14 +15,19 @@ X-API-Key: YOUR_API_KEY
 **Example Request:**
 ```bash
 curl -H "X-API-Key: YOUR_API_KEY" \
-  https://api.example.com/finance/invoices
+  https://api.wildtrico.com/finance/invoices
 ```
 
 ---
 
 ## Obtaining an API Key
-API keys are issued to authorized users or systems.  
-Contact **API Support:** [support@wildtrico.com](mailto:support@wildtrico.com)
+API keys are generated on a self-service basis. To generate a key navigate to
+
+1. Profile (top right)
+2. My Applications
+3. Create Application
+4. Navigate to Credentials tab
+5. Create credentials
 
 ---
 
