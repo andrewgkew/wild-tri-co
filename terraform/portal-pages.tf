@@ -27,3 +27,13 @@ resource "konnect_portal_page" "getting_started" {
   title          = "Getting Started"
   visibility     = "private"
 }
+
+resource "konnect_portal_page" "register" {
+  content        = file("${path.module}/pages/register.md")
+  description    = "Sign up for an account"
+  portal_id      = konnect_portal.my_portal.id
+  slug           = "/register"
+  status         = "published"
+  title          = "Sign up"
+  visibility     = "public"
+}
