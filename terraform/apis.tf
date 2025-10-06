@@ -1,9 +1,15 @@
 locals {
   spec_files = fileset("${path.module}/../specs", "*.yaml")
+  docs_files = fileset("${path.module}/../docs", "*.yaml")
 
   apis = {
     for f in local.spec_files :
     trimsuffix(f, ".yaml") => yamldecode(file("${path.module}/../specs/${f}"))
+  }
+
+  docs = {
+    for f in local.docs_files :
+    trimsuffix(f, ".yaml") => yamldecode(file("${path.module}/../docs/${f}"))
   }
 }
 
@@ -29,4 +35,13 @@ resource "konnect_api_publication" "api_publications" {
   auto_approve_registrations = true
   portal_id                  = konnect_portal.my_portal.id
   visibility                 = "public"
+}
+
+resource "konnect_api_document" "my_apidocument" {
+  for_each           = local.docs
+  api_id             = "11a505a1-f179-440e-821c-475941d4241d"
+  content            = file("${path.module}/../docs/${each.key}.yaml")
+  slug               = each.key
+  status             = "published"
+  title              = title(replace(each.key, "-", " "))
 }
