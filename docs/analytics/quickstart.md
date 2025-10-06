@@ -2,12 +2,14 @@
 
 Get started with the **Analytics API** in minutes!
 
+---
+
 ## 1. Authentication
-All endpoints require authentication via an API token.
+All endpoints require an **API key** sent via the `X-API-Key` header.
 
 **Example Header:**
 ```http
-Authorization: Bearer YOUR_API_TOKEN
+X-API-Key: YOUR_API_KEY
 Accept: application/json
 ```
 
@@ -25,7 +27,9 @@ https://api.example.com/v1
 Retrieve athlete performance reports:
 
 ```bash
-curl -X GET "https://api.example.com/v1/athlete-performance/reports?limit=5"   -H "Authorization: Bearer YOUR_API_TOKEN"   -H "Accept: application/json"
+curl -X GET "https://api.example.com/v1/athlete-performance/reports?limit=5" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -H "Accept: application/json"
 ```
 
 **Expected Response:**
@@ -51,4 +55,4 @@ curl -X GET "https://api.example.com/v1/athlete-performance/reports?limit=5"   -
 }
 ```
 
-You're now ready to explore endpoints in more depth!
+You're now ready to explore the API further!
