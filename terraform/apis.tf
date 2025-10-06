@@ -25,7 +25,7 @@ resource "konnect_api" "apis" {
 resource "konnect_api_publication" "api_publications" {
   for_each                   = konnect_api.apis
   api_id                     = each.value.id
-  auth_strategy_ids          = ["dee3f180-36c3-44bb-8567-6d32e08387e9"]
+  auth_strategy_ids          = [konnect_application_auth_strategy.key_auth.id]
   auto_approve_registrations = true
   portal_id                  = konnect_portal.my_portal.id
   visibility                 = "public"
