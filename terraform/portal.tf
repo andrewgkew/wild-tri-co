@@ -20,7 +20,7 @@ resource "konnect_application_auth_strategy" "key_auth" {
     configs = {
       key_auth = {
         key_names = [
-          "apiKey"
+          "X-API-Key"
         ]
       }
     }
