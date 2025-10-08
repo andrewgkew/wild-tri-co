@@ -5,11 +5,11 @@ Get started with the **Finance API** in minutes!
 ---
 
 ## 1. Authentication
-All endpoints require an **API key** sent via the `X-API-Key` header.
+All endpoints require an **API key** sent via the `apiKey` header.
 
 **Example Header:**
 ```http
-X-API-Key: YOUR_API_KEY
+apiKey: YOUR_API_KEY
 Accept: application/json
 ```
 
@@ -26,8 +26,8 @@ https://api.wildtrico.com/finance
 Retrieve all invoices:
 
 ```bash
-curl -X GET "https://api.wildtrico.com/finance/invoices?limit=5" \
-  -H "X-API-Key: YOUR_API_KEY" \
+curl -X GET "https://api.wildtrico.com/invoices?limit=5" \
+  -H "apiKey: YOUR_API_KEY" \
   -H "Accept: application/json"
 ```
 

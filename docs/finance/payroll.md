@@ -11,15 +11,15 @@
 ## Authentication
 Include your API key in the request header:
 ```http
-X-API-Key: YOUR_API_KEY
+apiKey: YOUR_API_KEY
 ```
 
 ---
 
 ## Example: List Payroll Entries
 ```bash
-curl -X GET "https://api.wildtrico.com/finance/payroll?limit=5" \
-  -H "X-API-Key: YOUR_API_KEY" \
+curl -X GET "https://api.wildtrico.com/payroll?limit=5" \
+  -H "apiKey: YOUR_API_KEY" \
   -H "Accept: application/json"
 ```
 
@@ -27,8 +27,8 @@ curl -X GET "https://api.wildtrico.com/finance/payroll?limit=5" \
 
 ## Example: Create Payroll Entry
 ```bash
-curl -X POST "https://api.wildtrico.com/finance/payroll" \
-  -H "X-API-Key: YOUR_API_KEY" \
+curl -X POST "https://api.wildtrico.com/payroll" \
+  -H "apiKey: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "employee_name": "Jane Smith",

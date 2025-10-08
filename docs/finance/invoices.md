@@ -14,15 +14,15 @@
 ## Authentication
 Include your API key in the request header:
 ```http
-X-API-Key: YOUR_API_KEY
+apiKey: YOUR_API_KEY
 ```
 
 ---
 
 ## Example: List Invoices
 ```bash
-curl -X GET "https://api.wildtrico.com/finance/invoices?limit=10" \
-  -H "X-API-Key: YOUR_API_KEY" \
+curl -X GET "https://api.wildtrico.com/invoices?limit=10" \
+  -H "apiKey: YOUR_API_KEY" \
   -H "Accept: application/json"
 ```
 
@@ -36,8 +36,8 @@ curl -X GET "https://api.wildtrico.com/finance/invoices?limit=10" \
 
 ## Example: Create an Invoice
 ```bash
-curl -X POST "https://api.wildtrico.com/finance/invoices" \
-  -H "X-API-Key: YOUR_API_KEY" \
+curl -X POST "https://api.wildtrico.com/invoices" \
+  -H "apiKey: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "client_name": "John Doe",

@@ -3,19 +3,19 @@
 ## Overview
 The Finance API uses **API Key Authentication** for all requests.
 
-Include your key in the `X-API-Key` header with every request.
+Include your key in the `apiKey` header with every request.
 
 ---
 
 ## Example Header
 ```http
-X-API-Key: YOUR_API_KEY
+apiKey: YOUR_API_KEY
 ```
 
 **Example Request:**
 ```bash
-curl -H "X-API-Key: YOUR_API_KEY" \
-  https://api.wildtrico.com/finance/invoices
+curl -H "apiKey: YOUR_API_KEY" \
+  https://api.wildtrico.com/invoices
 ```
 
 ---

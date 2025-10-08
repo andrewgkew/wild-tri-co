@@ -19,7 +19,7 @@ The **Triathlon Business Finance API** provides endpoints for managing invoices,
 - RESTful JSON API design
 - Pagination and filtering support
 - Consistent response schema for lists
-- **API Key Authentication** via the `X-API-Key` header
+- **API Key Authentication** via the `apiKey` header
 
 ---
 

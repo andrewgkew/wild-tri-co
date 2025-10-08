@@ -12,7 +12,7 @@ Generate a monthly financial report summarizing revenue, expenses, and profit.
 ## Authentication
 Include your API key in the request header:
 ```http
-X-API-Key: YOUR_API_KEY
+apiKey: YOUR_API_KEY
 ```
 
 ---
@@ -26,8 +26,8 @@ X-API-Key: YOUR_API_KEY
 
 ## Example Request
 ```bash
-curl -X GET "https://api.wildtrico.com/finance/reports/monthly?month=2024-01" \
-  -H "X-API-Key: YOUR_API_KEY" \
+curl -X GET "https://api.wildtrico.com/reports/monthly?month=2024-01" \
+  -H "apiKey: YOUR_API_KEY" \
   -H "Accept: application/json"
 ```
 
