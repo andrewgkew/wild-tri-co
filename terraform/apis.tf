@@ -44,7 +44,7 @@ resource "konnect_api_document" "apidocument_analytics" {
 
 resource "konnect_api_document" "apidocument_finance" {
   for_each           = local.docs_finance
-  api_id             = "7a8f21e4-5ed1-4756-9c21-ad6c1435b256"
+  api_id             = "1adc3bc3-7b4a-40fe-9828-f86a2a6f70aa"
   content            = file("${path.module}/../docs/finance/${each.key}")
   slug               = trimsuffix(each.key,".md")
   status             = "published"
@@ -52,7 +52,7 @@ resource "konnect_api_document" "apidocument_finance" {
 }
 
 resource "konnect_api_version" "finance_api_v1_2" {
-  api_id  = "7a8f21e4-5ed1-4756-9c21-ad6c1435b256"
+  api_id  = "1adc3bc3-7b4a-40fe-9828-f86a2a6f70aa"
   spec    = {
     content = file("${path.module}/../docs/finance/finance-api-v1.2.yaml")
   }
