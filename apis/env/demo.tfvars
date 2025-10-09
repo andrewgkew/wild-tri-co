@@ -223,6 +223,34 @@ api_config = {
         title = "Overview"
         location = "./docs/finance/overview.md"
       }
+      "quickstart" = {
+        title = "Quickstart"
+        location = "./docs/finance/quickstart.md"
+      }
+      "authentication" = {
+        title = "Authentication"
+        location = "./docs/finance/authentication.md"
+      }
+      "changelog" = {
+        title = "Changelog"
+        location = "./docs/finance/changelog.md"
+      }
+      "errors" = {
+        title = "Errors"
+        location = "./docs/finance/errors.md"
+      }
+      "invoices" = {
+        title = "Invoices"
+        location = "./docs/finance/invoices.md"
+      }
+      "payroll" = {
+        title = "Payroll"
+        location = "./docs/finance/payroll.md"
+      }
+      "reports" = {
+        title = "Reports"
+        location = "./docs/finance/reports.md"
+      }
     }
     portal = "Wild Tri Co."
 
