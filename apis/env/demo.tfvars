@@ -56,7 +56,7 @@ api_config = {
     versions = [
       {
         version  = "1.4.0"
-        location = "./specs/atheletes-api.yaml"
+        location = "./specs/athletes-api.yaml"
         type     = "yaml"
       }
     ]
