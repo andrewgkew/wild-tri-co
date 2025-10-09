@@ -40,9 +40,9 @@ jobs:
 
       - name: Terraform Plan
         working-directory: ./apis
-        run: terraform plan -input=false
+        run: terraform plan -input=false -var-file=env/demo.tfvars
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
         working-directory: ./apis
-        run: terraform apply -auto-approve -input=false
+        run: terraform apply -auto-approve -input=false -var-file=env/demo.tfvars
