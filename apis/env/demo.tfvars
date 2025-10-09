@@ -7,16 +7,16 @@ api_config = {
     api_visibility  = "public"
     labels = {}
     attributes = {
-      domain            = "Business"
-      use_case          = "Insights"
-      audience          = "Admin"
-      data_type         = "Reports"
-      business_function = "Analytics"
-      workflow_stage    = "Analyze"
-      integration_type  = "Analytics"
-      access_level      = "Internal"
-      complexity_level  = "Analytics APIs"
-      industry_focus    = "Sports Tech"
+      domain            = ["Business"]
+      use_case          = ["Insights"]
+      audience          = ["Admin"]
+      data_type         = ["Reports"]
+      business_function = ["Analytics"]
+      workflow_stage    = ["Analyze"]
+      integration_type  = ["Analytics"]
+      access_level      = ["Internal"]
+      complexity_level  = ["Analytics APIs"]
+      industry_focus    = ["Sports Tech"]
     }
     versions = [
       {

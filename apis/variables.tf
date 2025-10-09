@@ -18,7 +18,7 @@ variable "api_config" {
     api_description = string
     api_visibility  = string
     labels          = map(string)
-    attributes      = map(string)
+    attributes      = map(any)
     versions = list(object({
       version  = string
       location = string

@@ -31,7 +31,7 @@ variable "labels" {
 }
 
 variable "attributes" {
-  type        = map(string)
+  type        = map(any)
   description = "Attributes used to catagorize APIs"
   default     = {}
 }
