@@ -30,6 +30,38 @@ api_config = {
         title = "Overview"
         location = "./docs/analytics/overview.md"
       }
+      "quickstart" = {
+        title = "Quickstart"
+        location = "./docs/analytics/quickstart.md"
+      }
+      "authentication" = {
+        title = "Authentication"
+        location = "./docs/analytics/authentication.md"
+      }
+      "changelog" = {
+        title = "Changelog"
+        location = "./docs/analytics/changelog.md"
+      }
+      "errors" = {
+        title = "Errors"
+        location = "./docs/analytics/errors.md"
+      }
+      "recipes" = {
+        title = "Recipes"
+        location = "./docs/analytics/recipes.md"
+      }
+      "business-operations" = {
+        title = "Business Operations"
+        location = "./docs/analytics/business-operations.md"
+      }
+      "athlete-performance" = {
+        title = "Athlete Performance"
+        location = "./docs/analytics/athlete-performance.md"
+      }
+      "pagination-and-filtering" = {
+        title = "Pagination & Filtering"
+        location = "./docs/analytics/pagination-and-filtering.md"
+      }
     }
     portal = "Wild Tri Co."
 
