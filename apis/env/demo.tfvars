@@ -375,4 +375,34 @@ api_config = {
     portal = "Wild Tri Co."
 
   }
+  "medal" = {
+    current_version = "1.0.0"
+    api_slug        = "medal"
+    api_name        = "Triathlon Medal Management API."
+    api_description = "API for managing triathlon race medals, including creation, updates, and tracking."
+    api_visibility  = "private"
+    labels = {}
+    attributes = {
+      domain            = ["Business"]
+      use_case          = ["Commerce"]
+      audience          = ["Admin"]
+      data_type         = ["Inventory"]
+      business_function = ["Analytics"]
+      workflow_stage    = ["Retail"]
+      integration_type  = ["Prepare"]
+      access_level      = ["Internal"]
+      complexity_level  = ["Basic CRUD"]
+      industry_focus    = ["Retail"]
+    }
+    versions = [
+      {
+        version  = "1.0.0"
+        location = "./specs/medal-api.yaml"
+        type     = "yaml"
+      }
+    ]
+    api_docs = {}
+    portal = "Wild Tri Co."
+
+  }
 }
