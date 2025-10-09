@@ -1,0 +1,278 @@
+openapi: 3.1.0
+info:
+  name: Logistics
+  title: Triathlon Logistics API
+  version: 1.0.0
+  description: API for managing logistics and delivery operations for a triathlon business.
+  contact:
+    name: Triathlon Logistics API Support
+    url: https://wildtrico.com/support
+    email: support@wildtrico.com
+  x-konnect:
+    slug: logistics-v1
+    attributes:
+      domain: [ "Events" ]
+      use_case: [ "Operations" ]
+      audience: [ "Admin" ]
+      data_type: [ "Schedules" ]
+      business_function: [ "Logistics" ]
+      workflow_stage: [ "Compete" ]
+      integration_type: [ "Support Services" ]
+      access_level: [ "Internal" ]
+      complexity_level: [ "Composite" ]
+      industry_focus: [ "Event Management" ]
+servers:
+  - url: https://api.example.com/logistics
+    description: Production server
+
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+          description: Street address
+        city:
+          type: string
+          description: City
+        state:
+          type: string
+          description: State
+        zip_code:
+          type: string
+          description: Zip code
+        country:
+          type: string
+          description: Country
+      required:
+        - street
+        - city
+        - state
+        - zip_code
+        - country
+      example:
+        street: 123 Main St
+        city: Anytown
+        state: CA
+        zip_code: '91234'
+        country: USA
+
+    DeliveryOrder:
+      type: object
+      properties:
+        order_id:
+          type: string
+          format: uuid
+          description: Unique identifier for the order
+        customer_id:
+          type: string
+          format: uuid
+          description: Unique identifier for the customer
+        shipping_address:
+          $ref: '#/components/schemas/Address'
+        delivery_date:
+          type: string
+          format: date
+          description: Expected delivery date
+        status:
+          type: string
+          enum: [pending, in_transit, delivered, cancelled]
+          description: Status of the delivery
+        items:
+          type: array
+          items:
+            type: string
+            description: Name of the item
+        tracking_number:
+          type: string
+          description: Tracking number for the delivery
+        carrier:
+          type: string
+          description: Carrier used for the delivery
+      required:
+        - order_id
+        - customer_id
+        - shipping_address
+        - delivery_date
+        - status
+        - items
+      example:
+        order_id: 550e8400-e29b-41d4-a716-446655440000
+        customer_id: a1b2c3d4-e5f6-7890-1234-567890abcdef
+        shipping_address:
+          street: 456 Elm St
+          city: Anytown
+          state: NY
+          zip_code: '10001'
+          country: USA
+        delivery_date: 2024-03-15
+        status: pending
+        items: [Triathlon Bike, Wetsuit, Running Shoes]
+        tracking_number: 1Z999AA10000000000
+        carrier: UPS
+
+    DeliveryOrderList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryOrder'
+        meta:
+          type: object
+          properties:
+            page:
+              type: object
+              properties:
+                offset:
+                  type: integer
+                  description: The number of items to skip before starting to collect the result set
+                limit:
+                  type: integer
+                  description: The numbers of items to return
+                total:
+                  type: integer
+                  description: The total number of items available
+                estimated_total:
+                  type: boolean
+                  description: If the total number of items is an estimated value
+
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+security:
+  - apiKeyAuth: []
+
+tags:
+  - name: Delivery Orders
+    description: Operations related to managing delivery orders
+
+paths:
+  /delivery-orders:
+    get:
+      summary: List delivery orders with pagination
+      description: Retrieve a list of delivery orders with pagination support.
+      operationId: listDeliveryOrders
+      tags:
+        - Delivery Orders
+      parameters:
+        - name: offset
+          in: query
+          description: The number of items to skip before starting to collect the result set
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: The numbers of items to return
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryOrderList'
+    post:
+      summary: Create a new delivery order
+      description: Create a new delivery order.
+      operationId: createDeliveryOrder
+      tags:
+        - Delivery Orders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryOrder'
+      responses:
+        '201':
+          description: Delivery order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryOrder'
+        '400':
+          description: Invalid input
+
+  /delivery-orders/{order_id}:
+    get:
+      summary: Get a delivery order by ID
+      description: Retrieve a specific delivery order by its ID.
+      operationId: getDeliveryOrderById
+      tags:
+        - Delivery Orders
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          description: ID of the delivery order to retrieve
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryOrder'
+        '404':
+          description: Delivery order not found
+    put:
+      summary: Update a delivery order by ID
+      description: Update an existing delivery order by its ID.
+      operationId: updateDeliveryOrder
+      tags:
+        - Delivery Orders
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          description: ID of the delivery order to update
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryOrder'
+      responses:
+        '200':
+          description: Delivery order updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryOrder'
+        '400':
+          description: Invalid input
+        '404':
+          description: Delivery order not found
+    delete:
+      summary: Delete a delivery order by ID
+      description: Delete an existing delivery order by its ID.
+      operationId: deleteDeliveryOrder
+      tags:
+        - Delivery Orders
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          description: ID of the delivery order to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Delivery order deleted successfully
+        '404':
+          description: Delivery order not found
