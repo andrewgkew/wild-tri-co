@@ -1,6 +1,6 @@
 ---
 title: "Sign up"
-description: "Sign up for an account."
+description: "Sign up for an account"
 ---
 
 ::page-hero
