@@ -116,7 +116,7 @@ api_config = {
     }
     versions = [
       {
-        version  = "1.0.0"
+        version  = "1.6.0"
         location = "./specs/coffee-shop-api.yaml"
         type     = "yaml"
       }
@@ -146,7 +146,7 @@ api_config = {
     }
     versions = [
       {
-        version  = "1.0.0"
+        version  = "1.1.5"
         location = "./specs/events-api.yaml"
         type     = "yaml"
       }
@@ -276,7 +276,7 @@ api_config = {
     }
     versions = [
       {
-        version  = "1.0.0"
+        version  = "1.1.0"
         location = "./specs/training-plan-api.yaml"
         type     = "yaml"
       }
