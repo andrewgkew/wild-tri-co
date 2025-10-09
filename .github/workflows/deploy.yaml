@@ -1,13 +1,10 @@
-name: Terraform
+name: Deploy Developer Portal
 
 on:
   workflow_dispatch:
   push:
-    paths-ignore:
-      - README.md
-      - LICENSE.md
-      - .github/ruleset.yaml
-      - .github/workflows/lint-specs.yaml
+    paths:
+      - 'portal/**'
     branches: [ "main" ]
 
 jobs:
@@ -34,7 +31,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Terraform Init
-        working-directory: ./terraform
+        working-directory: ./portal
         run: |
           terraform init \
             -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
@@ -42,10 +39,10 @@ jobs:
             -backend-config="region=${{ secrets.AWS_REGION }}"
 
       - name: Terraform Plan
-        working-directory: ./terraform
+        working-directory: ./portal
         run: terraform plan -input=false
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
-        working-directory: ./terraform
+        working-directory: ./portal
         run: terraform apply -auto-approve -input=false
