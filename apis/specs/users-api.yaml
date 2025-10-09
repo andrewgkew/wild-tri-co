@@ -8,19 +8,6 @@ info:
     name: API Support
     url: https://wildtrico.com/support
     email: support@wildtrico.com
-  x-konnect:
-    slug: users-v1
-    attributes:
-      domain: [ "Business" ]
-      use_case: [ "Operations" ]
-      audience: [ "Admin" ]
-      data_type: [ "Profiles" ]
-      business_function: [ "User Mgmt" ]
-      workflow_stage: [ "Any" ]
-      integration_type: [ "Core System" ]
-      access_level: [ "Internal" ]
-      complexity_level: [ "Basic CRUD" ]
-      industry_focus: [ "Business Operations" ]
 servers:
   - url: https://api.example.com/v1
     description: Production server

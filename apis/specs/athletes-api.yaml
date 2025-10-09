@@ -8,19 +8,6 @@ info:
     name: API Support
     url: https://wildtrico.com/support
     email: support@wildtrico.com
-  x-konnect:
-    slug: athlete-v1
-    attributes:
-      domain: [ "Athlete" ]
-      use_case: [ "Performance" ]
-      audience: [ "Athlete" ]
-      data_type: [ "Profiles" ]
-      business_function: [ "Training" ]
-      workflow_stage: [ "Train" ]
-      integration_type: [ "Core System" ]
-      access_level: [ "Partner" ]
-      complexity_level: [ "Basic CRUD" ]
-      industry_focus: [ "Sports Tech" ]
 servers:
   - url: https://api.example.com/v1
     description: Main API server

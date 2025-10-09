@@ -8,19 +8,6 @@ info:
     name: API Support
     url: https://wildtrico.com/support
     email: support@wildtrico.com
-  x-konnect:
-    slug: finance-v1-2
-    attributes:
-      domain: [ "Business" ]
-      use_case: [ "Commerce" ]
-      audience: [ "Admin" ]
-      data_type: [ "Transactions" ]
-      business_function: [ "Finance" ]
-      workflow_stage: [ "Any" ]
-      integration_type: [ "Payment","Commerce" ]
-      access_level: [ "Internal" ]
-      complexity_level: [ "Composite" ]
-      industry_focus: [ "Retail","Finance" ]
 servers:
   - url: https://api.wildtrico.com/finance
     description: Production server

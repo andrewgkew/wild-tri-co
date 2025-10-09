@@ -8,19 +8,6 @@ info:
     name: API Support
     url: https://wildtrico.com/support
     email: support@wildtrico.com
-  x-konnect:
-    slug: events-v1
-    attributes:
-      domain: [ "Events" ]
-      use_case: [ "Operations" ]
-      audience: [ "Admin","Athlete" ]
-      data_type: [ "Schedules" ]
-      business_function: [ "Event Mgmt" ]
-      workflow_stage: [ "Register", "Compete" ]
-      integration_type: [ "Core System" ]
-      access_level: [ "Public", "Partner" ]
-      complexity_level: [ "Composite" ]
-      industry_focus: [ "Event Management" ]
 servers:
   - url: https://api.example.com/v1
     description: Production server

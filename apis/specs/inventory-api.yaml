@@ -8,19 +8,6 @@ info:
     name: API Support
     url: https://wildtrico.com/support
     email: support@wildtrico.com
-  x-konnect:
-    slug: inventory-v1
-    attributes:
-      domain: [ "Business" ]
-      use_case: [ "Commerce" ]
-      audience: [ "Admin", "Athlete" ]
-      data_type: [ "Inventory" ]
-      business_function: [ "Retail" ]
-      workflow_stage: [ "Prepare" ]
-      integration_type: [ "Commerce" ]
-      access_level: [ "Internal" ]
-      complexity_level: [ "Basic CRUD" ]
-      industry_focus: [ "Retail" ]
 servers:
   - url: https://api.example.com/inventory
     description: Main server

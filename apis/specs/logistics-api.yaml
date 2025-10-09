@@ -8,19 +8,6 @@ info:
     name: Triathlon Logistics API Support
     url: https://wildtrico.com/support
     email: support@wildtrico.com
-  x-konnect:
-    slug: logistics-v1
-    attributes:
-      domain: [ "Events" ]
-      use_case: [ "Operations" ]
-      audience: [ "Admin" ]
-      data_type: [ "Schedules" ]
-      business_function: [ "Logistics" ]
-      workflow_stage: [ "Compete" ]
-      integration_type: [ "Support Services" ]
-      access_level: [ "Internal" ]
-      complexity_level: [ "Composite" ]
-      industry_focus: [ "Event Management" ]
 servers:
   - url: https://api.example.com/logistics
     description: Production server

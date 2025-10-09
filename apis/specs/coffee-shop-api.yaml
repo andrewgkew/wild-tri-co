@@ -8,19 +8,6 @@ info:
     name: API Support
     url: https://wildtrico.com/support
     email: support@wildtrico.com
-  x-konnect:
-    slug: coffee-shop-v1
-    attributes:
-      domain: [ "Business" ]
-      use_case: [ "Commerce" ]
-      audience: [ "Athlete" ]
-      data_type: [ "Transactions" ]
-      business_function: [ "Retail" ]
-      workflow_stage: [ "Community" ]
-      integration_type: [ "Payment","Commerce" ]
-      access_level: [ "Public" ]
-      complexity_level: [ "Basic CRUD" ]
-      industry_focus: [ "Retail","Community" ]
 servers:
   - url: https://api.example.com/coffee-shop
     description: Main server

@@ -8,19 +8,6 @@ info:
     name: API Support
     url: https://wildtrico.com/support
     email: support@wildtrico.com
-  x-konnect:
-    slug: analytics-v1
-    attributes:
-      domain: [ "Business" ]
-      use_case: [ "Insights" ]
-      audience: [ "Admin", "Coach" ]
-      data_type: [ "Reports" ]
-      business_function: [ "Analytics" ]
-      workflow_stage: [ "Analyze" ]
-      integration_type: [ "Analytics", "Reporting"]
-      access_level: [ "Internal"]
-      complexity_level: [ "Analytics APIs" ]
-      industry_focus: [ "Sports Tech", "OPS" ]
 servers:
   - url: https://api.wildtrico.com/analytics
     description: Production server
