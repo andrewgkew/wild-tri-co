@@ -4,7 +4,7 @@
 The **Triathlon Business Finance API** provides endpoints for managing invoices, payroll, and financial reports. It is designed to help triathlon businesses automate their financial operations efficiently.
 
 **Version:** 1.3.0 
-**Base URL:** `https://api.wildtrico.com/finance`
+**Base URL:** `https://api.wildtrico.com`
 
 ---
 
