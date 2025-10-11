@@ -1,6 +1,7 @@
 # Wild Tri Co
 
 [![Terraform](https://github.com/andrewgkew/wild-tri-co/actions/workflows/deploy.yaml/badge.svg)](https://github.com/andrewgkew/wild-tri-co/actions/workflows/deploy.yaml)
+[![Terraform](https://github.com/andrewgkew/wild-tri-co/actions/workflows/deploy-apis.yaml/badge.svg)](https://github.com/andrewgkew/wild-tri-co/actions/workflows/deploy-apis.yaml)
 ![GitHub License](https://img.shields.io/github/license/andrewgkew/wild-tri-co)
 ![GitHub last commit](https://img.shields.io/github/last-commit/andrewgkew/wild-tri-co)
 ![GitHub issues](https://img.shields.io/github/issues/andrewgkew/wild-tri-co)
@@ -14,13 +15,14 @@ A triathlon business platform combining APIs (OpenAPI specs + infrastructure), e
 
 This repository houses:
 
-- OpenAPI / OAS spec files in the `specs/` directory
-- Terraform infrastructure under the `terraform/` directory
-- GitHub Actions workflows for CI/CD
+- Terraform IaC
+    - Under the `portal/` directory to provision a Konnect Developer portal
+    - Under the `apis/` directory to onboard APIs and markdown docs to the Developer Portal
+- GitHub Actions workflows for CI/CD for both projects
 
 ---
 
-## 🚀 Getting Started (Local Development)
+## 🚀 Getting Started (Developer Portal Local Development)
 
 1. Clone the repository:
 
@@ -29,10 +31,10 @@ This repository houses:
    cd wild-tri-co
    ```
 
-2. Navigate to Terraform:
+2. To provision a Developer Portal:
 
    ```bash
-   cd terraform
+   cd portal
    ```
 
 3. Configure your backend and secrets. For example, use an S3 backend and set default variables in tfvars file:
@@ -54,8 +56,8 @@ This repository houses:
 5. Plan & Apply:
 
    ```bash
-   terraform plan
-   terraform apply
+   terraform plan -var-file=example.tfvars
+   terraform apply -var -file=example.tfvars
    ```
 
 ---
@@ -72,65 +74,164 @@ The CI pipeline will:
 
 Make sure you add the following secrets in your GitHub repo settings:
 
-- `AWS_ACCESS_KEY_ID`
-- `AWS_SECRET_ACCESS_KEY`
-- `AWS_REGION`
-- `TF_STATE_BUCKET`
-- `TF_STATE_KEY`
-- `KONNECT_TOKEN`
+- `AWS_ACCESS_KEY_ID` - IAM access key to write terraform state to S3
+- `AWS_SECRET_ACCESS_KEY` - IAM secret key to write terraform state to S3
+- `AWS_REGION` - The default AWS region
+- `TF_STATE_BUCKET` - The S3 bucket name already created in AWS
+- `TF_STATE_KEY` - The terraform state key which defines the S3 object name i.e `developer-portal/terraform.tfstate`
+- `KONNECT_TOKEN` - The Konnect System account token used to provision Konnect Developer portal
 
 ---
 
-## 📦 API Specs & Metadata
+## 📦 API Specs & Docs
 
-Each OpenAPI spec file (YAML) supports **custom metadata** via an `x-konnect` block (usually nested under `info`) to capture:
+The second terraform project under `apis/` gives you ability to onboard APIs and mardown docs to the already created Konnect Developer Portal.
 
-- `slug`
-- `attributes` (domain, use_case, audience, etc.)
+The project has an internal terraform module that allows you to create:
 
-Example:
+1. An API with given name and description
+2. Set the current version of the API
+3. Add custom attributes that are used for filtering APIs on the portal
+4. Set the visibility of the API to private or public
+5. Create multiple versions of the API if you are managing more than 1 version of the API
+6. Create markdown docs that are linked to the API and visible as part of the API Renderer
+
+To onboard APIs you can easily define all these in your tfvars file. Currently the project only allows local based OAS and markdown docs
+but this can be extended to allow pulling of the files from a URL instead.
+
+Example tfvars file
 
 ```yaml
-openapi: 3.1.0
-info:
-  name: Analytics
-  title: Triathlon Business Reports and Insights API
-  version: 1.0.0
-  description: API for generating reports and insights on athlete performance and business operations.
-  x-konnect:
-    slug: analytics-v1
-    attributes:
-      domain: ["business"]
-      use_case: ["insights"]
-      audience: ["admin","coach"]
-      data_type: ["reports"]
-      business_function: ["analytics"]
-      workflow_stage: ["analyze"]
-      integration_type: ["analytics","reporting"]
-      access_level: ["internal"]
-      complexity_level: ["analytics"]
-      industry_focus: ["sports tech","ops"]
-servers:
-  - url: https://api.example.com/v1
-    description: Production server
-paths:
-  # ... endpoints, etc.
+api_config = {
+  "analytics" = {
+    current_version = "1.0.0"
+    api_slug        = "analytics"
+    api_name        = "Triathlon Business Reports and Insights API"
+    api_description = "API for generating reports and insights on athlete performance and business operations for a triathlon business."
+    api_visibility  = "private"
+    labels = {}
+    attributes = {
+      domain            = ["Business"]
+      use_case          = ["Insights"]
+      audience          = ["Admin"]
+      data_type         = ["Reports"]
+      business_function = ["Analytics"]
+      workflow_stage    = ["Analyze"]
+      integration_type  = ["Analytics"]
+      access_level      = ["Internal"]
+      complexity_level  = ["Analytics APIs"]
+      industry_focus    = ["Sports Tech"]
+    }
+    versions = [
+      {
+        version  = "1.0.0"
+        location = "./specs/analytics-api.yaml"
+        type     = "yaml"
+      }
+    ]
+    api_docs = {
+    "overview" = {
+        title = "Overview"
+        location = "./docs/analytics/overview.md"
+      }
+      "quickstart" = {
+        title = "Quickstart"
+        location = "./docs/analytics/quickstart.md"
+      }
+      "authentication" = {
+        title = "Authentication"
+        location = "./docs/analytics/authentication.md"
+      }
+      "changelog" = {
+        title = "Changelog"
+        location = "./docs/analytics/changelog.md"
+      }
+      "errors" = {
+        title = "Errors"
+        location = "./docs/analytics/errors.md"
+      }
+      "recipes" = {
+        title = "Recipes"
+        location = "./docs/analytics/recipes.md"
+      }
+      "business-operations" = {
+        title = "Business Operations"
+        location = "./docs/analytics/business-operations.md"
+      }
+      "athlete-performance" = {
+        title = "Athlete Performance"
+        location = "./docs/analytics/athlete-performance.md"
+      }
+      "pagination-and-filtering" = {
+        title = "Pagination & Filtering"
+        location = "./docs/analytics/pagination-and-filtering.md"
+      }
+    }
+    portal = "Wild Tri Co."
+  }
+"atheletes" = {
+    current_version = "1.4.0"
+    api_slug        = "athlete"
+    api_name        = "Athlete Management API"
+    api_description = "API for managing athlete profiles and performance data."
+    api_visibility  = "private"
+    labels = {}
+    attributes = {
+      domain            = ["Athlete"]
+      use_case          = ["Performance"]
+      audience          = ["Athlete"]
+      data_type         = ["Profiles"]
+      business_function = ["Training"]
+      workflow_stage    = ["Train"]
+      integration_type  = ["Core System"]
+      access_level      = ["Partner"]
+      complexity_level  = ["Basic CRUD"]
+      industry_focus    = ["Sports Tech"]
+    }
+    versions = [
+      {
+        version  = "1.4.0"
+        location = "./specs/athletes-api.yaml"
+        type     = "yaml"
+      }
+    ]
+    api_docs = {
+    }
+    portal = "Wild Tri Co."
+
+  }
+}
 ```
 
-Terraform loops over the specs directory, decodes each spec, and auto-creates:
+Terraform loops over this map and auto-creates:
 
 - `konnect_api` resources
+- `konnect_api_version` resources
 - `konnect_api_publication` resources
+- `konnect_api_document` resources
 
-It pulls metadata from both `info` and `x-konnect`.
+### Publishing APIs to a portal
+In order to find the portal to publish the APIs to the module will check the name of your portal that it contains the string
+passed in in the `portal` field in your `tfvars` file
+
+```yaml
+data "konnect_portal" "portal" {
+  filter = {
+    name = {
+      contains = var.portal
+    }
+  }
+}
+```
 
 ---
 
 ## 📚 Resources & References
 
 - Terraform Docs: [Backend Configuration](https://developer.hashicorp.com/terraform/language/settings/backends)
-- OpenAPI Extensions (`x-` fields) conventions
-- GitHub Actions / `hashicorp/setup-terraform` action
+- Konnect registration: [Register](https://cloud.konghq.com/)
+- Konnect Docs: [Developer Poratal Docs](https://developer.konghq.com/dev-portal/)
+- Terraform Provider: [Konnect Terraform Provider](https://registry.terraform.io/providers/Kong/konnect/latest/docs)
 
 ---
 
