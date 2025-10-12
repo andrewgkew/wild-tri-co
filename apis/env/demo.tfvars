@@ -373,6 +373,35 @@ api_config = {
     ]
     api_docs = {}
     portal = "Wild Tri Co."
+  }
+  "meal-plan" = {
+    current_version = "1.0.0"
+    api_slug        = "meal-plan"
+    api_name        = "Triathlon Athlete Diet and Meal Planning API"
+    api_description = "API to manage athlete diets and meal plans for triathlon training."
+    api_visibility  = "private"
+    labels = {}
+    attributes = {
+      domain            = ["Health"]
+      use_case          = ["Operations"]
+      audience          = ["Athlete"]
+      data_type         = ["Health"]
+      business_function = ["Training"]
+      workflow_stage    = ["Prepare"]
+      integration_type  = ["Support Services"]
+      access_level      = ["Public"]
+      complexity_level  = ["Basic CRUD"]
+      industry_focus    = ["Health"]
+    }
+    versions = [
+      {
+        version  = "1.0.0"
+        location = "./specs/meal-plan-api.yaml"
+        type     = "yaml"
+      }
+    ]
+    api_docs = {}
+    portal = "Wild Tri Co."
 
   }
   "medal" = {

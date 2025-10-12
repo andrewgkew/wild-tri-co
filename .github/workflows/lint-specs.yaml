@@ -7,7 +7,7 @@ name: Lint OpenAPI Specs
 on:
   pull_request:
     paths:
-      - "specs/**.yaml"
+      - "apis/specs/**.yaml"
       - ".github/ruleset.yaml"
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
           list-files: json
           filters: |
             specs:
-              - 'specs/**.yaml'
+              - 'apis/specs/**.yaml'
 
   vacuum-lint:
     needs: detect-changes
