@@ -22,10 +22,10 @@ This repository houses:
 
 ---
 
-## Live Demo
+## ⚡ Live Demo
 You can access a live demo of the Konnect Develoepr Portal by navigating to this link
 
-[Wild Tri Co Developer Portal](https://developer.wildtrico.com/)
+[Wild Tri Co Developer Portal](https://developer.wildtrico.com/){:target="_blank"}
 
 You will have to register and account and confirm your email, but then you will have access to view everything on the site
 
